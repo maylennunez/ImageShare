@@ -4,6 +4,7 @@ const config = require('./server/config');
 
 // database
  require('./database')
+ 
 
 const app = config(express());
 

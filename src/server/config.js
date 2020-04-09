@@ -5,7 +5,7 @@ const multer = require('multer')
 const express = require('express')
 const errorhandlers = require('errorhandler');
 
-const routes = require ('../routes/index')
+const routes = require ('../routes/index');
 
 module.exports = app => {
  
@@ -18,21 +18,20 @@ app.engine('.hbs', exphbs({
     layoutsDir: path.join(app.get('views'), 'layouts'),
     extname: '.hbs',
     helpers: require('./helpers')
-}))
-app.set('views({ engine', 'hbs');
+}));
+app.set('views engine', 'hbs');
 
 // middlewares
 app.use(morgan('dev'));
 app.use(multer({dest: path.join(__dirname, '../public/upload/temp')}).single('image'))
 app.use(express.urlencoded({extended: false}));
-app.use(express.json())
+app.use(express.json());
 
 // routes
 routes(app);
 
 // static files
-
-app.use('/public', express.static(path.join(_dirname, '../public')))
+app.use('/public', express.static(path.join(__dirname, './public')))
 
 // errorhandlers
 if ('development' === app.get('env')) {

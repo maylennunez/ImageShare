@@ -1,7 +1,7 @@
 const ctrl = {};
 
 ctrl.index = (req, res) => {
-    res.render('index')
+    res.render('ind')
 };
 
 ctrl.create = (req, res) => {

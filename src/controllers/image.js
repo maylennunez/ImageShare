@@ -1,3 +1,5 @@
+const path = require('path');
+
 const ctrl = {};
 
 ctrl.index = (req, res) => {
@@ -5,8 +7,11 @@ ctrl.index = (req, res) => {
 };
 
 ctrl.create = (req, res) => {
-console.log(req.file);
-res.send(works);
+// console.log(req.file);
+const imageTempPath = req.file.path;                  // get image location
+const ext = path.extname(req.file.originalname).toLocaleLowerCase();          // to get extension 
+
+res.send('works!');
    
 };
 

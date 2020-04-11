@@ -1,12 +1,19 @@
 const ctrl = {};
 
 ctrl.index = (req, res) => {
-    res.render('ind')
+    
 };
 
 ctrl.create = (req, res) => {
-    res.send('in')
+console.log(req.file);
+res.send(works);
+   
 };
+
+
+
+
+
 ctrl.like = (req, res) => {
     res.send('in')
 };

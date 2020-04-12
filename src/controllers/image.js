@@ -12,8 +12,12 @@ const imgUrl = randomNumber();
 console.log(imgUrl);
 const imageTempPath = req.file.path;                  // get image location
 const ext = path.extname(req.file.originalname).toLocaleLowerCase();          // to get extension 
-const targetPath = path.resolve('src/public/upload/text${ext}')
+const targetPath = path.resolve('src/public/upload/${imgUrl}${ext}')
 res.send('works!');
+
+if (ext === '.png' || ext === '.jpg' || ext === '.gif') {
+
+}
    
 };
 

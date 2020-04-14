@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
-
+const path = require('path');
 
  const imageSchema = new schema({
     title: {type : String},
@@ -12,6 +12,12 @@ const {Schema} = mongoose;
 
 })
 
+// virtual variable to get only the file name without extension
+
+imageSchema.virtual('uniqueId')
+.get(function () {
+    return this.filename.replace(path.extname(this.filename), '')
+})
 
 
 module.exports = mongoose.model('Image', imageSchema)

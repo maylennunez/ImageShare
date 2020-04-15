@@ -11,14 +11,12 @@ ctrl.index = (req, res) => {
 
 };
 
-ctrl.create = async (req, res) => {
+ctrl.create =  (req, res) => {
     // console.log(req.file);
+     const saveImage = async () => {
 
-    const saveImage = () => {
-
-        const imgUrl = randomNumber();
-
-        const images = await Image.find({ filename: imgUrl });
+        const imgUrl = randomNumber();                                                     
+        const images = await Image.find({ filename: imgUrl });            // randon number validation
         if (images.length > 0) {
             saveImage();
         } else {
@@ -35,28 +33,29 @@ ctrl.create = async (req, res) => {
                     description: req.body.description
                 });
                 const imageSaved = await newImg.save();
+                // res.redirect('/images')
             } else {
                 await fs.unlink(imageTempPath);                                        // delete file
                 res.status(500).json({ error: 'Only Images are allowed' });
             }
             // console.log(newImg)
             // }
-            res.send('works!');
+            
         };
-
     }
-}
+    
+};
 
 
 
-        ctrl.like = (req, res) => {
-            res.send('in')
-        };
-        ctrl.comment = (req, res) => {
-            res.send('in')
-        };
-        ctrl.remove = (req, res) => {
-            res.send('in')
-        };
+ctrl.like = (req, res) => {
+    res.send('in')
+};
+ctrl.comment = (req, res) => {
+    res.send('in')
+};
+ctrl.remove = (req, res) => {
+    res.send('in')
+};
 
-        module.exports = ctrl;
+module.exports = ctrl;

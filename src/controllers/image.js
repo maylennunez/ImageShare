@@ -7,8 +7,11 @@ const { Image } = require('../models/index');
 
 
 
-ctrl.index = (req, res) => {
+ctrl.index = async (req, res) => {
+    // console.log(req.params.image_id)
+    const image = await Image.findOne({filename: {$regex: req.params.image_id}})
 
+res.render('image', {image});
 };
 
 ctrl.create =  (req, res) => {

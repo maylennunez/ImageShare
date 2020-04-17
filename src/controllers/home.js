@@ -1,6 +1,9 @@
 const ctrl = {};
+const {Image} = require('../models/')
 
-ctrl.index = (req, res) => {            // export function index
+
+ctrl.index = async (req, res) => {  
+    const images = await Image.find().sort({timeStamp: -1});         
     res.render('index')
 };
 

@@ -10,13 +10,13 @@ const { Image, Comment } = require('../models/index');
 
 ctrl.index = async (req, res) => {
     // console.log(req.params.image_id)
-    const viewModel = {image: {}, comments: {}};
+    let viewModel = {image: {}, comments: {}};
 
     const image = await Image.findOne({ filename: { $regex: req.params.image_id } })
     if (image) {                                             // image validation
     image.views = image.views + 1;
     viewModel.image = image;
-    await image.save();
+     image.save();
     const comments = await Comment.find({ image_id: image._id });
     viewModel.comments = comments;
     res.render('image', {image, viewModel });
@@ -39,7 +39,7 @@ ctrl.create = (req, res) => {
             const ext = path.extname(req.file.originalname).toLocaleLowerCase();          // to get extension 
             const targetPath = path.resolve('src/public/upload/${imgUrl}${ext}')
 
-            if (ext === '.png' || ext === '.jpg' || ext === '.gif') {
+            if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
                 await fs.rename(imageTempPath, targetPath);                             // move image from imageTempPath to targetPath
                 const newImg = new Image({
                     title: req.body.title,
@@ -47,17 +47,17 @@ ctrl.create = (req, res) => {
                     description: req.body.description
                 });
                 const imageSaved = await newImg.save();
-                res.redirect('/images/' + imgUrl)
+                res.redirect('/images/' + imageSaved.uniqueId)
             } else {
                 await fs.unlink(imageTempPath);                                        // delete file
                 res.status(500).json({ error: 'Only Images are allowed' });
             }
             // console.log(newImg)
-            // }
-
+            
+         
         };
     }
-
+    saveImage()
 };
 
 

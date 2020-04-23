@@ -46,13 +46,14 @@ ctrl.create = (req, res) => {
                     filename: imgUrl + ext,                                             //image save in dataBase
                     description: req.body.description
                 });
+                 // console.log(newImg)
                 const imageSaved = await newImg.save();
                 res.redirect('/images/' + imageSaved.uniqueId)
             } else {
                 await fs.unlink(imageTempPath);                                        // delete file
                 res.status(500).json({ error: 'Only Images are allowed' });
             }
-            // console.log(newImg)
+           
             
          
         };
@@ -87,8 +88,15 @@ ctrl.comment = async (req, res) => {
 };
 
 
-ctrl.remove = (req, res) => {
-    res.send('in')
+ctrl.remove = async (req, res) => {
+    // console.log(req.params.image_id)
+    const image = await Image.findOne({ filename: { $regex: req.params.image_id } })
+    if (image){
+     await fs.unlink(path.resolve('./src/public/upload/'+ image.filename));
+     await Comment.deleteOne({image_id: image._id});
+     await image.remove();
+     res.json(true)
+    }
 };
 
 module.exports = ctrl;

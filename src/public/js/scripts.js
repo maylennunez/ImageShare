@@ -1,3 +1,9 @@
+$('#post-comment').hide();
+$('#btn-toggle-comment').click(e => {
+   e.preventDefault();
+   $('#post-comment').slideToggle(); 
+})
+
 $('#btn-like').click(function(e) {
     e.preventDefault();
     let imgId = $(this).data('id');
@@ -23,6 +29,7 @@ if (response) {
     $this.removeClass('btn-danger').addClass('btn-success');
     $this.find('i').removeClass('fa-times').addClass('fa-check');
     $this.append('<span>Deleted!</span>');
+
     })
 }
 

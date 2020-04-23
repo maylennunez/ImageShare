@@ -2,7 +2,7 @@ const express = require('express');    // import express to use express.Router
 const router = express.Router();  
      
 const home = require('../controllers/home');
-const image = require('../controllers/image');
+const images = require('../controllers/image');
 
 module.exports = app => {
 

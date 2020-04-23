@@ -26,18 +26,19 @@ ctrl.index = async (req, res) => {
 };
 
 ctrl.create = (req, res) => {
-    // console.log(req.file);
-    const saveImage = async () => {
+     console.log(req.file);
 
+    const saveImage = async () => {
         const imgUrl = randomNumber();
         const images = await Image.find({ filename: imgUrl });            // randon number validation
         if (images.length > 0) {
             saveImage();
         } else {
+            
             console.log(imgUrl);
             const imageTempPath = req.file.path;                                           // get image location
-            const ext = path.extname(req.file.originalname).toLocaleLowerCase();          // to get extension 
-            const targetPath = path.resolve('src/public/upload/${imgUrl}${ext}')
+            const ext = path.extname(req.file.originalname).toLowerCase();          // to get extension 
+            const targetPath = path.resolve(`src/public/upload/${imgUrl}${ext}`)
 
             if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
                 await fs.rename(imageTempPath, targetPath);                             // move image from imageTempPath to targetPath
@@ -54,8 +55,6 @@ ctrl.create = (req, res) => {
                 res.status(500).json({ error: 'Only Images are allowed' });
             }
            
-            
-         
         };
     }
     saveImage()
@@ -92,10 +91,11 @@ ctrl.remove = async (req, res) => {
     // console.log(req.params.image_id)
     const image = await Image.findOne({ filename: { $regex: req.params.image_id } })
     if (image){
-     await fs.unlink(path.resolve('./src/public/upload/'+ image.filename));
+     await fs.unlink(path.resolve('/src/public/upload/'+ image.filename));
      await Comment.deleteOne({image_id: image._id});
      await image.remove();
      res.json(true)
+     res.redirect('/');
     }
 };
 

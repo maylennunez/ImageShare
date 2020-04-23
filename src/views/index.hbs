@@ -8,7 +8,6 @@
         <form action="/images" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <div class="input-group">
-
                     <div class="custom-file">
                         <input type="file" name="image" class="custom-file-input" id="inputGroupFile"
                             aria-describedby="inputGroupFileAddon" required />
@@ -45,8 +44,8 @@
           <div class="card-body"> 
               <div class="row">
               {{#each images }}
-              <div class="col-md-4">
-                  <a href="/images/{{uniquedId}}">
+              <div class="col-md-4 text-center">
+                  <a href="/images/{{ uniquedId }}">
                       <img src="/public/upload/{{filename}}" alt="{{tittle}}" class="w-100 h-100 img-thumbnail">
                   </a>
               </div>

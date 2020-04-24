@@ -35,7 +35,7 @@ ctrl.create = (req, res) => {
             saveImage();
         } else {
             
-            console.log(imgUrl);
+            // console.log(imgUrl);
             const imageTempPath = req.file.path;                                           // get image location
             const ext = path.extname(req.file.originalname).toLowerCase();          // to get extension 
             const targetPath = path.resolve(`src/public/upload/${imgUrl}${ext}`)

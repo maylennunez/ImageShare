@@ -1,4 +1,4 @@
-const { Comments, Image } = require('../models');
+const { Comment, Image } = require('../models');
 
 async function imagesCounter() {
     return await Image.countDocuments();
@@ -15,7 +15,7 @@ async function commentsCounter() {
 }
 
 
-async function imagesTotalViewsCounter() {
+async function imageTotalViewsCounter() {
     const result = await Image.aggregate([{
         $group: {
             _id: '1',
@@ -38,12 +38,12 @@ return result[0].likesTotal;
 }
 
 
-module.exports = () => {
+module.exports = async () => {
 
 const result = await Promise.all([
     imagesCounter(),
     commentsCounter(),
-    imagesTotalViewsCounter(),
+    imageTotalViewsCounter(),
     likesTotalCounter()
 ])
 return {

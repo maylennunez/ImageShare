@@ -1,0 +1,14 @@
+<div class="card mt-2">
+  <div class="card-header bg-dark text-white">
+    <h5>
+      <i class="fas fa-comments"></i> Latest Comments
+    </h5>
+  </div>
+  <div class="card-body">
+      {{#each sidebar.comments}}
+      <div class="row">
+        <div class="col">
+          <a href="/images/{{image.uniqueId}}">
+            <img src="/public/upload/{{image.filename}}" class="img-thumbnail w-70">
+          </a>
+        </div>

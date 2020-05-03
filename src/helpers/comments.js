@@ -7,7 +7,7 @@ module.exports = {
         .limit(5)
         .sort({ timestamp: -1 })
     for (const comment of comments) {
-        const image = Image.find({_id: comment.image_id});
+        const image = await Image.findOne({_id: comment.image_id});
         comment.image = image;
     }
 

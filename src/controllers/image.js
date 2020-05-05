@@ -10,24 +10,25 @@ const sidebar = require('../helpers/sidebar');
 
 ctrl.index = async (req, res) => {
     // console.log(req.params.image_id)
-    let viewModel = {image: {}, comments: {}};
+    let viewModel = { image: {}, comments: [] };
 
     const image = await Image.findOne({ filename: { $regex: req.params.image_id } })
     if (image) {                                             // image validation
-    image.views = image.views + 1;
-    viewModel.image = image;
-    await  image.save();
-    const comments = await Comment.find({ image_id: image._id });
-    viewModel.comments = comments;
-    viewModel = await sidebar(viewModel);
-    res.render('image', {image, viewModel });
+        image.views = image.views + 1;
+        viewModel.image = image;
+        await image.save();
+        const comments = await Comment.find({ image_id: image._id })
+            .sort({ 'timestamp': 1 });
+        viewModel.comments = comments;
+        viewModel = await sidebar(viewModel);
+        res.render('image', { image, viewModel });
     } else {
         res.redirect('/');
     }
 };
 
 ctrl.create = (req, res) => {
-     console.log(req.file);
+    console.log(req.file);
 
     const saveImage = async () => {
         const imgUrl = randomNumber();
@@ -35,12 +36,13 @@ ctrl.create = (req, res) => {
         if (images.length > 0) {
             saveImage();
         } else {
-            
+
             // console.log(imgUrl);
             const imageTempPath = req.file.path;                                           // get image location
             const ext = path.extname(req.file.originalname).toLowerCase();          // to get extension 
             const targetPath = path.resolve(`src/public/upload/${imgUrl}${ext}`)
-
+            console.log(targetPath);
+            
             if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
                 await fs.rename(imageTempPath, targetPath);                             // move image from imageTempPath to targetPath
                 const newImg = new Image({
@@ -48,14 +50,14 @@ ctrl.create = (req, res) => {
                     filename: imgUrl + ext,                                             //image save in dataBase
                     description: req.body.description
                 });
-                 // console.log(newImg)
+                // console.log(newImg)
                 const imageSaved = await newImg.save();
                 res.redirect('/images/' + imageSaved.uniqueId)
             } else {
                 await fs.unlink(imageTempPath);                                        // delete file
                 res.status(500).json({ error: 'Only Images are allowed' });
             }
-           
+
         };
     }
     saveImage()
@@ -64,14 +66,15 @@ ctrl.create = (req, res) => {
 
 
 ctrl.like = async (req, res) => {
-const image = await Image.findOne({filename: {$regex: req.params.image_id}});
-if (image) {
-    image.likes = image.likes + 1;
-    await save();
-    res.json({likes: image.likes})
-} else {
-    res.status(500).json({error: 'Internal Error'});
-}
+    const image = await Image.findOne({ filename: { $regex: req.params.image_id } });
+    console.log(image);
+    if (image) {
+        image.likes = image.likes + 1;
+        await image.save();
+        res.json({ likes: image.likes })
+    } else {
+        res.status(500).json({ error: 'Internal Error' });
+    }
 };
 
 ctrl.comment = async (req, res) => {
@@ -83,21 +86,24 @@ ctrl.comment = async (req, res) => {
         newComment.image_id = image._id;
         await newComment.save();
         // console.log(newComment)
+        res.redirect('/images/' + image.uniqueId + '#' + newComment._id)
+    } else {
+        res.redirect('/')
     }
-    res.redirect('/images' + image.uniqueId)
-};
-
+}
 
 ctrl.remove = async (req, res) => {
     // console.log(req.params.image_id)
     const image = await Image.findOne({ filename: { $regex: req.params.image_id } })
-    if (image){
-     await fs.unlink(path.resolve('/src/public/upload/'+ image.filename));
-     await Comment.deleteOne({image_id: image._id});
-     await image.remove();
-     res.json(true)
-     res.redirect('/');
+    if (image) {
+        await fs.unlink(path.resolve('./src/public/upload/' + image.filename));
+        await Comment.deleteOne({ image_id: image._id });
+        await image.remove();
+        res.json(true)
+    } else {
+        res.json({ response: 'Bad Request.'});
     }
+        res.redirect('/');
 };
 
 module.exports = ctrl;

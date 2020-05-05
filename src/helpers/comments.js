@@ -1,4 +1,4 @@
-const {Comment, Image} = require('../models');
+const { Comment, Image } = require('../models');
 
 module.exports = {
 

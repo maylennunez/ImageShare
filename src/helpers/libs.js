@@ -11,4 +11,4 @@ helpers.randomNumber = () => {
     return randomNumber;
 };
 
-module.exports = helpers
+module.exports = helpers;

@@ -16,8 +16,9 @@ ctrl.index = async (req, res) => {
     if (image) {                                             // image validation
         image.views = image.views + 1;
         viewModel.image = image;
-        await image.save();
-        const comments = await Comment.find({ image_id: image._id })
+        image.save();
+        const comments = await Comment
+            .find({ image_id: image._id })
             .sort({ 'timestamp': 1 });
         viewModel.comments = comments;
         viewModel = await sidebar(viewModel);
@@ -42,7 +43,7 @@ ctrl.create = (req, res) => {
             const ext = path.extname(req.file.originalname).toLowerCase();          // to get extension 
             const targetPath = path.resolve(`src/public/upload/${imgUrl}${ext}`)
             console.log(targetPath);
-            
+
             if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
                 await fs.rename(imageTempPath, targetPath);                             // move image from imageTempPath to targetPath
                 const newImg = new Image({
@@ -101,9 +102,9 @@ ctrl.remove = async (req, res) => {
         await image.remove();
         res.json(true)
     } else {
-        res.json({ response: 'Bad Request.'});
+        res.json({ response: 'Bad Request.' });
     }
-        res.redirect('/');
+    res.redirect('/');
 };
 
 module.exports = ctrl;

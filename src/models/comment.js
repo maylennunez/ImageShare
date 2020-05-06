@@ -17,4 +17,4 @@ CommentSchema.virtual('image')
 .get(function () {
     return this._image;
 })
-module.exports = model('Comment', CommentSchema)
+module.exports = mongoose.model('Comment', CommentSchema)

@@ -38,7 +38,7 @@ ctrl.create = (req, res) => {
             saveImage();
         } else {
 
-            // console.log(imgUrl);
+             console.log(imgUrl);
             const imageTempPath = req.file.path;                                           // get image location
             const ext = path.extname(req.file.originalname).toLowerCase();          // to get extension 
             const targetPath = path.resolve(`src/public/upload/${imgUrl}${ext}`)
@@ -51,14 +51,14 @@ ctrl.create = (req, res) => {
                     filename: imgUrl + ext,                                             //image save in dataBase
                     description: req.body.description
                 });
-                // console.log(newImg)
+                 console.log(newImg)
                 const imageSaved = await newImg.save();
                 res.redirect('/images/' + imageSaved.uniqueId)
             } else {
                 await fs.unlink(imageTempPath);                                        // delete file
                 res.status(500).json({ error: 'Only Images are allowed' });
             }
-
+           console.log(imageSaved);
         };
     }
     saveImage()

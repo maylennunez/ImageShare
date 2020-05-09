@@ -3,7 +3,7 @@ const { randomNumber } = require('../helpers/libs');
 const fs = require('fs-extra');
 const ctrl = {};
 const md5 = require('md5');
-const { Image, Comment } = require('../models/index');
+const { Image, Comment } = require('../models');
 const sidebar = require('../helpers/sidebar');
 
 
@@ -58,10 +58,10 @@ ctrl.create = (req, res) => {
                 await fs.unlink(imageTempPath);                                        // delete file
                 res.status(500).json({ error: 'Only Images are allowed' });
             }
-           console.log(imageSaved);
+        console.log(imageSaved);
         };
     }
-    saveImage()
+    saveImage();
 };
 
 

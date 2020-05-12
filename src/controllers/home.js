@@ -11,6 +11,7 @@ ctrl.index = async (req, res) => {
     viewModel = await sidebar(viewModel);
     // console.log(viewModel.sidebar.comments[0].images)     
     res.render('index', viewModel);
+    res.render('index', images);
 };
 
 module.exports = ctrl;
